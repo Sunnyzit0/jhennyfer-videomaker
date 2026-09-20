@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, AtSign, Camera, Check, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
+import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, AtSign, Camera, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
 import { contato } from './data/contato'
 import { precos } from './data/precos'
 import './index.css'
@@ -43,10 +43,15 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') { closeLightbox(); setMenuOpen(false) }
+      if (event.key === 'Escape') { setSelectedImage(null); requestAnimationFrame(() => lastFocusedElement.current?.focus()); setMenuOpen(false) }
       if (!selectedImage) return
-      if (event.key === 'ArrowLeft') { event.preventDefault(); navigateLightbox(-1) }
-      if (event.key === 'ArrowRight') { event.preventDefault(); navigateLightbox(1) }
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault()
+        const direction = event.key === 'ArrowLeft' ? -1 : 1
+        const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage.title)
+        const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
+        setSelectedImage(filteredPortfolio[nextIndex])
+      }
       if (event.key === 'Tab') {
         const focusable = lightboxRef.current?.querySelectorAll('button')
         if (!focusable?.length) return
@@ -101,7 +106,7 @@ function App() {
 
         <section className="portfolio-section section-padding" id="portfolio"><div className="portfolio-heading"><div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div><p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p></div><div className="filter-row" role="group" aria-label="Filtrar portfólio">{categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>{item}</button>)}</div><div className="portfolio-grid">{filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={() => openLightbox(item)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="lazy" style={item.title === 'Um dia para lembrar' ? { objectPosition: 'center 22%' } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}</div><div className="video-placeholder"><div className="play-icon" style={{ flexShrink: 0, aspectRatio: '1 / 1' }}><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><span className="placeholder-note">Instagram</span></div></section>
 
-        <section className="process-section section-padding" id="processo"><div className="process-intro"><div className="section-kicker"><span>05</span><span>como funciona</span></div><h2>Do primeiro oi<br />à <em>entrega.</em></h2><p>Um processo simples, transparente e feito para você se sentir segura em cada etapa.</p></div><div className="steps-list">{steps.map(([number, title, text]) => <div className="step" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Check size={18} /></div>)}</div></section>
+        <section className="process-section section-padding" id="processo"><div className="process-intro"><div className="section-kicker"><span>05</span><span>como funciona</span></div><h2>Do primeiro oi<br />à <em>entrega.</em></h2><p>Um processo simples, transparente e feito para você se sentir segura em cada etapa.</p></div><div className="steps-list">{steps.map(([number, title, text]) => <div className="step" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></section>
 
         <section className="pricing-section section-padding" id="valores"><div className="pricing-heading"><div className="section-kicker"><span>06</span><span>investimento</span></div><h2>Investimento,<br /><em>sem complicação.</em></h2></div><div className="pricing-table-wrap"><table className="pricing-table"><caption className="sr-only">Valores de exemplo por serviço</caption><thead><tr><th scope="col">Serviço</th><th scope="col">O que inclui</th><th scope="col">Valor</th></tr></thead><tbody>{precos.map((item) => <tr key={item.servico}><th scope="row">{item.servico}</th><td><ul>{item.inclui.map((incluso, index) => <li key={`${item.servico}-${index}`}>{incluso}</li>)}</ul></td><td><span className="price-placeholder">{item.valor}</span></td></tr>)}</tbody></table></div><div className="pricing-note"><p>Valores personalizados conforme o projeto. Fale comigo para receber um orçamento.</p><a className="button button-dark" href={whatsappLink} target="_blank" rel="noreferrer">Falar no WhatsApp <ArrowUpRight size={17} /></a></div></section>
 
