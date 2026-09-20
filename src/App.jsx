@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { ArrowDownRight, ArrowUpRight, AtSign, Camera, Check, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, AtSign, Camera, Check, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
 import { contato } from './data/contato'
 import { precos } from './data/precos'
 import './index.css'
@@ -34,17 +34,35 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [category, setCategory] = useState('Todos')
   const [selectedImage, setSelectedImage] = useState(null)
+  const lastFocusedElement = useRef(null)
+  const lightboxRef = useRef(null)
+  const lightboxCloseRef = useRef(null)
   const whatsappLink = `https://wa.me/${contato.whatsappNumber}?text=${encodeURIComponent(contato.whatsappMessage)}`
   const categories = ['Todos', 'Casamentos', 'Ensaios']
   const filteredPortfolio = category === 'Todos' ? portfolio : portfolio.filter((item) => item.category === category)
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') { setSelectedImage(null); setMenuOpen(false) }
+      if (event.key === 'Escape') { closeLightbox(); setMenuOpen(false) }
+      if (!selectedImage) return
+      if (event.key === 'ArrowLeft') { event.preventDefault(); navigateLightbox(-1) }
+      if (event.key === 'ArrowRight') { event.preventDefault(); navigateLightbox(1) }
+      if (event.key === 'Tab') {
+        const focusable = lightboxRef.current?.querySelectorAll('button')
+        if (!focusable?.length) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+        if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [selectedImage])
+
+  useEffect(() => {
+    if (selectedImage) lightboxCloseRef.current?.focus()
+  }, [selectedImage])
 
   useEffect(() => {
     document.body.style.overflow = selectedImage ? 'hidden' : ''
@@ -52,6 +70,13 @@ function App() {
   }, [selectedImage])
 
   const closeMenu = () => setMenuOpen(false)
+  const openLightbox = (item) => { lastFocusedElement.current = document.activeElement; setSelectedImage(item) }
+  const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(() => lastFocusedElement.current?.focus()) }
+  const navigateLightbox = (direction) => {
+    const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage?.title)
+    const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
+    setSelectedImage(filteredPortfolio[nextIndex])
+  }
 
   return (
     <div className="site-shell">
@@ -74,7 +99,7 @@ function App() {
 
         <section className="services-section section-padding" id="servicos"><div className="section-heading"><div className="section-kicker"><span>03</span><span>o que eu faço</span></div><h2>Seu momento,<br /><em>do seu jeito.</em></h2></div><div className="services-grid">{services.map(({ icon: Icon, number, title, text }) => <article className="service-card" key={title}><div className="service-top"><Icon size={22} strokeWidth={1.5} /><span>{number}</span></div><h3>{title}</h3><p>{text}</p><ArrowUpRight className="service-arrow" size={20} /></article>)}</div></section>
 
-        <section className="portfolio-section section-padding" id="portfolio"><div className="portfolio-heading"><div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div><p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p></div><div className="filter-row" role="group" aria-label="Filtrar portfólio">{categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)}>{item}</button>)}</div><div className="portfolio-grid">{filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={() => setSelectedImage(item)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="lazy" style={item.title === 'Um dia para lembrar' ? { objectPosition: 'center 22%' } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}</div><div className="video-placeholder"><div className="play-icon" style={{ flexShrink: 0, aspectRatio: '1 / 1' }}><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><span className="placeholder-note">Instagram</span></div></section>
+        <section className="portfolio-section section-padding" id="portfolio"><div className="portfolio-heading"><div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div><p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p></div><div className="filter-row" role="group" aria-label="Filtrar portfólio">{categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>{item}</button>)}</div><div className="portfolio-grid">{filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={() => openLightbox(item)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="lazy" style={item.title === 'Um dia para lembrar' ? { objectPosition: 'center 22%' } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}</div><div className="video-placeholder"><div className="play-icon" style={{ flexShrink: 0, aspectRatio: '1 / 1' }}><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><span className="placeholder-note">Instagram</span></div></section>
 
         <section className="process-section section-padding" id="processo"><div className="process-intro"><div className="section-kicker"><span>05</span><span>como funciona</span></div><h2>Do primeiro oi<br />à <em>entrega.</em></h2><p>Um processo simples, transparente e feito para você se sentir segura em cada etapa.</p></div><div className="steps-list">{steps.map(([number, title, text]) => <div className="step" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Check size={18} /></div>)}</div></section>
 
@@ -84,7 +109,7 @@ function App() {
       </main>
 
       <footer className="site-footer"><a className="brand" href="#inicio"><span className="brand-mark">J</span><span>Jhennyfer</span></a><a href="#inicio" className="back-top">voltar ao topo <ArrowUpRight size={15} /></a></footer><a className="floating-whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" aria-label="Falar com Jhennyfer pelo WhatsApp"><MessageCircle size={22} /></a>
-      {selectedImage && <div className="lightbox" role="dialog" aria-modal="true" aria-label={`Visualizando ${selectedImage.title}`} onClick={() => setSelectedImage(null)}><button className="lightbox-close" type="button" onClick={() => setSelectedImage(null)} aria-label="Fechar imagem"><X size={22} /></button><img src={selectedImage.image} alt={selectedImage.title} width={selectedImage.width} height={selectedImage.height} onClick={(event) => event.stopPropagation()} /><div className="lightbox-caption"><span>{selectedImage.category}</span><strong>{selectedImage.title}</strong></div></div>}
+      {selectedImage && <div className="lightbox" ref={lightboxRef} role="dialog" aria-modal="true" aria-label={`Visualizando ${selectedImage.title}`} onClick={closeLightbox}><button className="lightbox-close" ref={lightboxCloseRef} type="button" onClick={closeLightbox} aria-label="Fechar imagem"><X size={22} /></button><button className="lightbox-nav lightbox-prev" type="button" onClick={(event) => { event.stopPropagation(); navigateLightbox(-1) }} aria-label="Imagem anterior"><ArrowLeft size={22} /></button><img src={selectedImage.image} alt={selectedImage.title} width={selectedImage.width} height={selectedImage.height} onClick={(event) => event.stopPropagation()} /><button className="lightbox-nav lightbox-next" type="button" onClick={(event) => { event.stopPropagation(); navigateLightbox(1) }} aria-label="Próxima imagem"><ArrowRight size={22} /></button><div className="lightbox-caption"><span>{selectedImage.category}</span><strong>{selectedImage.title}</strong></div></div>}
     </div>
   )
 }

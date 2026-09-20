@@ -20,3 +20,6 @@ section[id] { scroll-margin-top: 92px; }
 .main-nav a { font-size: 13px; }
 .button { font-size: 14px; }
 .hero-lede, .about-copy p:not(.eyebrow), .portfolio-heading p, .process-intro > p, .contact-card p { font-size: 16px; }
+.lightbox-nav { align-items: center; background: rgba(255,253,249,.12); border: 1px solid rgba(255,255,255,.55); border-radius: 50%; color: white; display: flex; height: 44px; justify-content: center; position: absolute; width: 44px; }
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
