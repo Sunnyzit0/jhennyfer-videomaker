@@ -1,8 +1,8 @@
 # Regras do projeto
 
-- Idioma: usar português brasileiro nos textos do site.
+- Textos do site em português brasileiro.
 - Fazer um commit a cada modificação concluída (uma alteração lógica = um commit).
-- Usar mensagens no padrão Conventional Commits (`feat`, `fix`, `style`, `refactor`, `docs`, `chore`), em português, curtas e claras.
+- Usar mensagens Conventional Commits em português, curtas e claras (`feat`, `fix`, `style`, `refactor`, `docs`, `chore`).
 - Nunca commitar arquivos `.env` ou credenciais.
-- Rodar o build e o lint, se existirem, antes de commitar.
+- Rodar `npm run build` e o lint, se existir, antes de commitar.
 - Executar `git push` após cada commit.
