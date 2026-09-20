@@ -63,7 +63,7 @@ function App() {
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [selectedImage])
+  }, [filteredPortfolio, selectedImage])
 
   useEffect(() => {
     if (selectedImage) lightboxCloseRef.current?.focus()
