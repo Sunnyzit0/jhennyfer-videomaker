@@ -16,6 +16,8 @@ const portfolio = [
   { title: 'Ensaio em movimento', category: 'Ensaios', image: imagePath('Outra mulher 1.jpeg') },
   { title: 'Um dia para lembrar', category: 'Casamentos', image: imagePath('Casamento.jpeg') },
   { title: 'Entre nós', category: 'Casamentos', image: imagePath('Casamento 2.jpeg') },
+  { title: 'Retrato autoral', category: 'Ensaios', image: imagePath('Mulher 2.jpg') },
+  { title: 'Olhar e presença', category: 'Ensaios', image: imagePath('Mulher 1.jpg') },
 ]
 
 const steps = [
