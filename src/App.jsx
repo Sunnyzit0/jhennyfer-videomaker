@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ArrowDownRight, ArrowUpRight, AtSign, Camera, Check, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
 import { contato } from './data/contato'
+import { precos } from './data/precos'
 import './index.css'
+import './pricing.css'
 
 const imagePath = (name) => `/imagens/${name}`
 
@@ -57,7 +59,7 @@ function App() {
         <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Jhennyfer, voltar ao início"><span className="brand-mark">J</span><span>Jhennyfer</span></a>
         <button className="menu-toggle" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
         <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegação principal">
-          <a href="#sobre" onClick={closeMenu}>Sobre mim</a><a href="#servicos" onClick={closeMenu}>Serviços</a><a href="#portfolio" onClick={closeMenu}>Portfólio</a><a href="#processo" onClick={closeMenu}>Como funciona</a><a className="nav-contact" href="#contato" onClick={closeMenu}>Vamos conversar <ArrowUpRight size={15} /></a>
+          <a href="#sobre" onClick={closeMenu}>Sobre mim</a><a href="#servicos" onClick={closeMenu}>Serviços</a><a href="#portfolio" onClick={closeMenu}>Portfólio</a><a href="#processo" onClick={closeMenu}>Como funciona</a><a href="#valores" onClick={closeMenu}>Valores</a><a className="nav-contact" href="#contato" onClick={closeMenu}>Vamos conversar <ArrowUpRight size={15} /></a>
         </nav>
       </header>
 
@@ -76,7 +78,9 @@ function App() {
 
         <section className="process-section section-padding" id="processo"><div className="process-intro"><div className="section-kicker"><span>05</span><span>como funciona</span></div><h2>Do primeiro oi<br />à <em>entrega.</em></h2><p>Um processo simples, transparente e feito para você se sentir segura em cada etapa.</p></div><div className="steps-list">{steps.map(([number, title, text]) => <div className="step" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div><Check size={18} /></div>)}</div></section>
 
-        <section className="contact-section section-padding" id="contato"><div className="contact-card"><span className="eyebrow">06 · vamos conversar</span><h2>Tem uma ideia<br /><em>na cabeça?</em></h2><p>Me conta. A gente transforma em algo bonito, real e com a sua cara.</p><div className="contact-actions"><a className="button button-light" href={whatsappLink} target="_blank" rel="noreferrer"><MessageCircle size={18} /> WhatsApp</a><a className="button button-outline-light" href={contato.instagramLink} target="_blank" rel="noreferrer"><AtSign size={18} /> Instagram</a></div><span className="contact-detail">{contato.instagramHandle} · {contato.whatsappDisplay}</span></div></section>
+        <section className="pricing-section section-padding" id="valores"><div className="pricing-heading"><div className="section-kicker"><span>06</span><span>investimento</span></div><h2>Investimento,<br /><em>sem complicação.</em></h2></div><div className="pricing-table-wrap"><table className="pricing-table"><caption className="sr-only">Valores de exemplo por serviço</caption><thead><tr><th scope="col">Serviço</th><th scope="col">O que inclui</th><th scope="col">Valor</th></tr></thead><tbody>{precos.map((item) => <tr key={item.servico}><th scope="row">{item.servico}</th><td><ul>{item.inclui.map((incluso, index) => <li key={`${item.servico}-${index}`}>{incluso}</li>)}</ul></td><td><span className="price-placeholder">{item.valor}</span></td></tr>)}</tbody></table></div><div className="pricing-note"><p>Valores personalizados conforme o projeto. Fale comigo para receber um orçamento.</p><a className="button button-dark" href={whatsappLink} target="_blank" rel="noreferrer">Falar no WhatsApp <ArrowUpRight size={17} /></a></div></section>
+
+        <section className="contact-section section-padding" id="contato"><div className="contact-card"><span className="eyebrow">07 · vamos conversar</span><h2>Tem uma ideia<br /><em>na cabeça?</em></h2><p>Me conta. A gente transforma em algo bonito, real e com a sua cara.</p><div className="contact-actions"><a className="button button-light" href={whatsappLink} target="_blank" rel="noreferrer"><MessageCircle size={18} /> WhatsApp</a><a className="button button-outline-light" href={contato.instagramLink} target="_blank" rel="noreferrer"><AtSign size={18} /> Instagram</a></div><span className="contact-detail">{contato.instagramHandle} · {contato.whatsappDisplay}</span></div></section>
       </main>
 
       <footer className="site-footer"><a className="brand" href="#inicio"><span className="brand-mark">J</span><span>Jhennyfer</span></a><a href="#inicio" className="back-top">voltar ao topo <ArrowUpRight size={15} /></a></footer><a className="floating-whatsapp" href={whatsappLink} target="_blank" rel="noreferrer" aria-label="Falar com Jhennyfer pelo WhatsApp"><MessageCircle size={22} /></a>
