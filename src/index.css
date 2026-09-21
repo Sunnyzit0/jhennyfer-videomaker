@@ -417,9 +417,6 @@ em {
 .portfolio-item.item-1 {
   grid-row: span 2;
 }
-.portfolio-item.item-4 {
-  grid-column: span 2;
-}
 .portfolio-grid.is-filtered {
   grid-template-rows: 360px;
 }
@@ -827,13 +824,11 @@ em {
     grid-template-rows: 220px;
   }
   .portfolio-item.item-1 {
-    grid-row: span 1;
+    grid-column: span 2;
+    grid-row: auto;
   }
   .portfolio-item.item-2 {
-    grid-column: span 2;
-  }
-  .portfolio-item.item-4 {
-    grid-column: span 1;
+    grid-column: auto;
   }
   .portfolio-overlay strong {
     font-size: 16px;
