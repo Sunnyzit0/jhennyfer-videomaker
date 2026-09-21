@@ -162,7 +162,7 @@
   .pricing-table td::before {
     color: var(--brown);
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.14em;
     margin-bottom: 6px;
