@@ -2,10 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, AtSign, Camera, Clapperboard, Menu, MessageCircle, Megaphone, PenLine, Play, Sparkles, X } from 'lucide-react'
 import { contato } from './data/contato'
 import { precos } from './data/precos'
+import { videos } from './data/videos'
 import './index.css'
 import './pricing.css'
 
 const imagePath = (name) => `/imagens/${name}`
+
+const youtubeEmbedUrl = (url) => {
+  try {
+    const parsedUrl = new URL(url)
+    const videoId = parsedUrl.searchParams.get('v') || parsedUrl.pathname.split('/').pop()
+    return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : url
+  } catch {
+    return url
+  }
+}
 
 const services = [
   { icon: Clapperboard, number: '01', title: 'Videomaker', text: 'Vídeos que traduzem a energia do seu momento e fazem sua história continuar em movimento.' },
@@ -104,7 +115,7 @@ function App() {
 
         <section className="services-section section-padding" id="servicos"><div className="section-heading"><div className="section-kicker"><span>03</span><span>o que eu faço</span></div><h2>Seu momento,<br /><em>do seu jeito.</em></h2></div><div className="services-grid">{services.map(({ icon: Icon, number, title, text }) => <article className="service-card" key={title}><div className="service-top"><Icon size={22} strokeWidth={1.5} /><span>{number}</span></div><h3>{title}</h3><p>{text}</p><ArrowUpRight className="service-arrow" size={20} /></article>)}</div></section>
 
-        <section className="portfolio-section section-padding" id="portfolio"><div className="portfolio-heading"><div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div><p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p></div><div className="filter-row" role="group" aria-label="Filtrar portfólio">{categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>{item}</button>)}</div><div className="portfolio-grid">{filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={() => openLightbox(item)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="lazy" style={item.title === 'Um dia para lembrar' ? { objectPosition: 'center 22%' } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}</div><div className="video-placeholder"><div className="play-icon" style={{ flexShrink: 0, aspectRatio: '1 / 1' }}><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><span className="placeholder-note">Instagram</span></div></section>
+        <section className="portfolio-section section-padding" id="portfolio"><div className="portfolio-heading"><div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div><p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p></div><div className="filter-row" role="group" aria-label="Filtrar portfólio">{categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>{item}</button>)}</div><div className="portfolio-grid">{filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={() => openLightbox(item)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="lazy" style={item.title === 'Um dia para lembrar' ? { objectPosition: 'center 22%' } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}</div>{videos.length > 0 ? <div className="video-grid">{videos.map((video) => video.tipo === 'youtube' ? <iframe key={video.url} src={youtubeEmbedUrl(video.url)} title={video.titulo} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /> : <a className="video-link-card" key={video.url} href={video.url} target="_blank" rel="noreferrer">{video.capa && <img src={video.capa} alt="" loading="lazy" />}<span>{video.titulo}</span><ArrowUpRight size={20} /></a>)}</div> : <div className="video-placeholder"><div className="play-icon" style={{ flexShrink: 0, aspectRatio: '1 / 1' }}><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><a className="placeholder-note" href={contato.instagramLink} target="_blank" rel="noreferrer">Instagram</a></div>}</section>
 
         <section className="process-section section-padding" id="processo"><div className="process-intro"><div className="section-kicker"><span>05</span><span>como funciona</span></div><h2>Do primeiro oi<br />à <em>entrega.</em></h2><p>Um processo simples, transparente e feito para você se sentir segura em cada etapa.</p></div><div className="steps-list">{steps.map(([number, title, text]) => <div className="step" key={number}><span className="step-number">{number}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></section>
 
