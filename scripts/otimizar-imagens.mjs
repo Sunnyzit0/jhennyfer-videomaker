@@ -8,7 +8,9 @@ const outputDir = path.join(root, 'public', 'imagens')
 
 const images = [
   { source: 'Videomaker.PNG', output: 'videomaker.webp', size: 1400, quality: 82 },
+  { source: 'Videomaker.PNG', output: 'videomaker-mobile.webp', size: 700, quality: 80 },
   { source: 'Videomaker 2.PNG', output: 'videomaker-2.webp', size: 1400, quality: 82 },
+  { source: 'Videomaker 2.PNG', output: 'videomaker-2-mobile.webp', size: 700, quality: 80 },
   { source: 'Casamento.jpeg', output: 'casamento-1.webp', size: 1600, quality: 80 },
   { source: 'Casamento 2.jpeg', output: 'casamento-2.webp', size: 1600, quality: 80 },
   { source: 'Outra mulher 1.jpeg', output: 'ensaio-1.webp', size: 1600, quality: 80 },

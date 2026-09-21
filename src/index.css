@@ -6,7 +6,7 @@
   --ink: #2e2925;
   --muted: #6b6058;
   --line: #dcd2c5;
-  --accent: #8f5a3c;
+  --accent: #7b4c32;
   font-family: "DM Sans", sans-serif;
   color: var(--ink);
   background: var(--cream);
@@ -556,6 +556,9 @@ em {
 }
 .contact-card .eyebrow {
   color: #d9a982;
+}
+.contact-card em {
+  color: #e0b79c;
 }
 .contact-card h2 {
   font-size: clamp(50px, 7vw, 90px);

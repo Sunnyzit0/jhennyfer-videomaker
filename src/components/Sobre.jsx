@@ -6,7 +6,7 @@ export function Sobre() {
       <div className="section-kicker"><span>02</span><span>sobre mim</span></div>
       <div className="about-grid">
         <div className="about-image">
-          <img src="/imagens/videomaker-2.webp" alt="Retrato em preto e branco de Jhennyfer" width="1050" height="1400" loading="lazy" />
+          <img src="/imagens/videomaker-2.webp" srcSet="/imagens/videomaker-2-mobile.webp 700w, /imagens/videomaker-2.webp 1050w" sizes="(max-width: 760px) 86vw, 40vw" alt="Retrato em preto e branco de Jhennyfer" width="1050" height="1400" loading="lazy" />
           <span>prazer, Jhennyfer</span>
         </div>
         <div className="about-copy">

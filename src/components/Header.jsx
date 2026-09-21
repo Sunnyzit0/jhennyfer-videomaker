@@ -5,7 +5,7 @@ export function Header({ menuOpen, setMenuOpen }) {
 
   return (
     <header className="site-header">
-      <a className="brand" href="#inicio" onClick={closeMenu} aria-label="Jhennyfer, voltar ao início">
+      <a className="brand" href="#inicio" onClick={closeMenu}>
         <span className="brand-mark">J</span>
         <span>Jhennyfer</span>
       </a>
