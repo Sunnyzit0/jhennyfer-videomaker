@@ -35,11 +35,17 @@ function App() {
   const categories = ['Todos', 'Casamentos', 'Ensaios']
   const filteredPortfolio = category === 'Todos' ? portfolio : portfolio.filter((item) => item.category === category)
 
+  const restoreFocusAfterClose = () => {
+    const target = lastFocusedElement.current
+    if (target?.isConnected) target.focus()
+    else document.querySelector('.filter-button.active')?.focus()
+  }
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         setSelectedImage(null)
-        requestAnimationFrame(() => lastFocusedElement.current?.focus())
+        requestAnimationFrame(restoreFocusAfterClose)
         setMenuOpen(false)
       }
       if (!selectedImage) return
@@ -72,8 +78,8 @@ function App() {
     return () => { document.body.style.overflow = '' }
   }, [selectedImage, menuOpen])
 
-  const openLightbox = (item) => { lastFocusedElement.current = document.activeElement; setSelectedImage(item) }
-  const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(() => lastFocusedElement.current?.focus()) }
+  const openLightbox = (item, event) => { lastFocusedElement.current = event.currentTarget; setSelectedImage(item) }
+  const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(restoreFocusAfterClose) }
   const navigateLightbox = (direction) => {
     const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage?.title)
     const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
