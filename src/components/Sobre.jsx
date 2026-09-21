@@ -11,7 +11,7 @@ export function Sobre() {
         </div>
         <div className="about-copy">
           <p className="eyebrow">olhar atento, processo leve</p>
-          <h2>Oi, eu sou a <em>Jhennyfer.</em></h2>
+          <h2>Oi, eu sou a <em>Jhennyfer.</em> (gerado por IA)</h2>
           <p>Eu acredito que os melhores registros acontecem quando a gente se sente à vontade para ser quem é. Meu trabalho é criar esse espaço: observar com carinho, dirigir quando precisa e deixar a verdade aparecer.</p>
           <p>Seja em um casamento, um ensaio ou na comunicação de uma marca, eu estou aqui para transformar intenção em imagem.</p>
           <a className="text-link" href="#contato">Vamos criar juntas <ArrowUpRight size={16} /></a>
