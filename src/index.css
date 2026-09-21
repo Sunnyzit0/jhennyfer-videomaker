@@ -884,6 +884,19 @@ section[id] {
 .contact-card p {
   font-size: 16px;
 }
+.hero-note,
+.filter-button,
+.portfolio-overlay span,
+.placeholder-note,
+.lightbox-caption span {
+  font-size: 12px;
+}
+.contact-detail {
+  font-size: 14px;
+}
+.site-footer {
+  font-size: 12px;
+}
 .lightbox-nav {
   align-items: center;
   background: rgba(255, 253, 249, 0.12);
