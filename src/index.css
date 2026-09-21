@@ -347,7 +347,6 @@ em {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.65;
-  max-width: 190px;
 }
 .service-arrow {
   bottom: 25px;
@@ -530,7 +529,7 @@ em {
 }
 .step p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
   max-width: 410px;
 }
@@ -908,11 +907,13 @@ section[id] {
   font-size: 16px;
 }
 .hero-note,
-.filter-button,
 .portfolio-overlay span,
 .placeholder-note,
 .lightbox-caption span {
   font-size: 12px;
+}
+.filter-button {
+  font-size: 13px;
 }
 .contact-detail {
   font-size: 14px;
