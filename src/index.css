@@ -420,6 +420,19 @@ em {
 .portfolio-item.item-4 {
   grid-column: span 2;
 }
+.portfolio-grid.is-filtered {
+  grid-template-rows: 360px;
+}
+.portfolio-grid.is-filtered .portfolio-item {
+  grid-column: auto;
+  grid-row: auto;
+}
+.portfolio-grid.is-filtered.count-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.portfolio-grid.is-filtered.count-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
 .portfolio-overlay {
   background: linear-gradient(transparent, rgba(26, 20, 16, 0.78));
   bottom: 0;
