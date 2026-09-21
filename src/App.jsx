@@ -65,9 +65,12 @@ function App() {
 
   useEffect(() => {
     if (selectedImage) lightboxCloseRef.current?.focus()
-    document.body.style.overflow = selectedImage ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
   }, [selectedImage])
+
+  useEffect(() => {
+    document.body.style.overflow = selectedImage || menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [selectedImage, menuOpen])
 
   const openLightbox = (item) => { lastFocusedElement.current = document.activeElement; setSelectedImage(item) }
   const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(() => lastFocusedElement.current?.focus()) }
