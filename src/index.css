@@ -818,6 +818,11 @@ em {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 250px 190px 190px;
   }
+  .portfolio-grid.is-filtered.count-2,
+  .portfolio-grid.is-filtered.count-3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px;
+  }
   .portfolio-item.item-1 {
     grid-row: span 1;
   }
