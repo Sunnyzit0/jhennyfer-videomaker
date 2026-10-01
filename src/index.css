@@ -823,6 +823,7 @@ section[id] {
 .film-strip::after { bottom: 0; }
 .film-strip img {
   aspect-ratio: 3 / 4;
+  height: auto;
   object-fit: cover;
   width: 100%;
 }
@@ -1815,8 +1816,9 @@ section[id] {
     grid-template-columns: 1fr;
   }
   .about-image {
-    margin-right: 40px;
-    max-width: 520px;
+    justify-self: start;
+    max-width: 460px;
+    width: calc(100% - 36px);
   }
 
   .service-row {
