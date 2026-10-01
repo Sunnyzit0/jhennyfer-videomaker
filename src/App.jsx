@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { contato } from './data/contato'
+import { categorias, portfolio } from './data/portfolio'
 import { precos } from './data/precos'
 import { videos } from './data/videos'
 import { BotaoWhatsapp } from './components/BotaoWhatsapp'
@@ -13,16 +14,8 @@ import { Processo } from './components/Processo'
 import { Servicos } from './components/Servicos'
 import { Sobre } from './components/Sobre'
 import { Valores } from './components/Valores'
-import './index.css'
 import './pricing.css'
 
-const portfolio = [
-  { title: 'Ensaio em movimento', category: 'Ensaios', image: '/imagens/ensaio-1.webp', width: 1067, height: 1600 },
-  { title: 'Um dia para lembrar', category: 'Casamentos', image: '/imagens/casamento-1.webp', width: 1200, height: 1600 },
-  { title: 'Entre nós', category: 'Casamentos', image: '/imagens/casamento-2.webp', width: 1200, height: 1600 },
-  { title: 'Retrato autoral', category: 'Ensaios', image: '/imagens/ensaio-3.webp', width: 1200, height: 1600 },
-  { title: 'Olhar e presença', category: 'Ensaios', image: '/imagens/ensaio-2.webp', width: 1200, height: 1600 },
-]
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -32,7 +25,6 @@ function App() {
   const lightboxRef = useRef(null)
   const lightboxCloseRef = useRef(null)
   const whatsappLink = `https://wa.me/${contato.whatsappNumber}?text=${encodeURIComponent(contato.whatsappMessage)}`
-  const categories = ['Todos', 'Casamentos', 'Ensaios']
   const filteredPortfolio = category === 'Todos' ? portfolio : portfolio.filter((item) => item.category === category)
 
   const restoreFocusAfterClose = () => {
@@ -95,7 +87,7 @@ function App() {
         <Hero whatsappLink={whatsappLink} />
         <Sobre />
         <Servicos />
-        <Portfolio category={category} categories={categories} filteredPortfolio={filteredPortfolio} setCategory={setCategory} openLightbox={openLightbox} videos={videos} instagramLink={contato.instagramLink} />
+        <Portfolio category={category} categories={categorias} filteredPortfolio={filteredPortfolio} setCategory={setCategory} openLightbox={openLightbox} videos={videos} instagramLink={contato.instagramLink} />
         <Processo />
         <Valores precos={precos} whatsappLink={whatsappLink} />
         <Contato contato={contato} whatsappLink={whatsappLink} />
