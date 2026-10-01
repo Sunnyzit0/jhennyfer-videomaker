@@ -100,7 +100,7 @@ function App() {
       <Footer />
       <BotaoWhatsapp whatsappLink={whatsappLink} />
       <Cursor />
-      {selectedImage && <Lightbox image={selectedImage} dialogRef={lightboxRef} closeRef={lightboxCloseRef} close={closeLightbox} navigate={navigateLightbox} />}
+      {selectedImage && <Lightbox image={selectedImage} position={filteredPortfolio.findIndex((item) => item.title === selectedImage.title) + 1} total={filteredPortfolio.length} dialogRef={lightboxRef} closeRef={lightboxCloseRef} close={closeLightbox} navigate={navigateLightbox} />}
     </div>
   )
 }

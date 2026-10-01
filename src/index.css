@@ -1646,6 +1646,15 @@ section[id] {
   right: 20px;
   top: 20px;
 }
+.lightbox-counter {
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  left: 24px;
+  letter-spacing: 0.12em;
+  position: absolute;
+  top: 36px;
+}
 .lightbox-nav {
   top: 50%;
   transform: translateY(-50%);
