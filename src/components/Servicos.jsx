@@ -20,7 +20,7 @@ export function Servicos() {
       <ul className="services-list">
         {services.map(({ icon: Icon, number, title, text }, index) => (
           <li key={title} data-reveal style={{ '--d': `${index * 80}ms` }}>
-            <a className="service-row" href={linkWhatsapp(`Oi, Jhennyfer! Vim pelo seu site e tenho interesse em ${title.toLowerCase()}.`)} target="_blank" rel="noreferrer">
+            <a className="service-row" href={linkWhatsapp(`Oi, Jhennyfer! Vim pelo seu site e tenho interesse em ${title.toLowerCase()}.`)} target="_blank" rel="noreferrer" data-cursor="orçar">
               <span className="service-num">{number}</span>
               <h3 className="service-title">{title}</h3>
               <p className="service-text">{text}</p>

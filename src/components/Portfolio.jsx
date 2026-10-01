@@ -58,7 +58,7 @@ export function Portfolio({ category, categories, portfolio, filteredPortfolio, 
             : <a className="video-link-card" key={video.url} href={video.url} target="_blank" rel="noreferrer">{video.capa && <img src={video.capa} alt="" loading="lazy" />}<span>{video.titulo}</span><ArrowUpRight size={20} /></a>)}
         </div>
       ) : (
-        <a className="video-placeholder" href={instagramLink} target="_blank" rel="noreferrer" data-reveal>
+        <a className="video-placeholder" href={instagramLink} target="_blank" rel="noreferrer" data-reveal data-cursor="play">
           <span className="sprockets" aria-hidden="true" />
           <span className="video-placeholder-body">
             <span className="play-icon" aria-hidden="true"><Play size={18} fill="currentColor" /></span>
