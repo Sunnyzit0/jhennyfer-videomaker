@@ -5,3 +5,6 @@ export const contato = {
   instagramHandle: '@jhennyfermonteir_',
   instagramLink: 'https://www.instagram.com/jhennyfermonteir_/',
 }
+
+export const linkWhatsapp = (mensagem = contato.whatsappMessage) =>
+  `https://wa.me/${contato.whatsappNumber}?text=${encodeURIComponent(mensagem)}`

@@ -1,21 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
-import { contato } from './data/contato'
+import { contato, linkWhatsapp } from './data/contato'
 import { categorias, portfolio } from './data/portfolio'
 import { precos } from './data/precos'
 import { videos } from './data/videos'
+import { useReveal } from './hooks/useReveal'
 import { BotaoWhatsapp } from './components/BotaoWhatsapp'
 import { Contato } from './components/Contato'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Lightbox } from './components/Lightbox'
+import { Marquee } from './components/Marquee'
 import { Portfolio } from './components/Portfolio'
 import { Processo } from './components/Processo'
 import { Servicos } from './components/Servicos'
 import { Sobre } from './components/Sobre'
 import { Valores } from './components/Valores'
-import './pricing.css'
 
+const whatsappLink = linkWhatsapp()
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -24,8 +26,9 @@ function App() {
   const lastFocusedElement = useRef(null)
   const lightboxRef = useRef(null)
   const lightboxCloseRef = useRef(null)
-  const whatsappLink = `https://wa.me/${contato.whatsappNumber}?text=${encodeURIComponent(contato.whatsappMessage)}`
   const filteredPortfolio = category === 'Todos' ? portfolio : portfolio.filter((item) => item.category === category)
+
+  useReveal()
 
   const restoreFocusAfterClose = () => {
     const target = lastFocusedElement.current
@@ -33,22 +36,24 @@ function App() {
     else document.querySelector('.filter-button.active')?.focus()
   }
 
+  const openLightbox = (item, event) => { lastFocusedElement.current = event.currentTarget; setSelectedImage(item) }
+  const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(restoreFocusAfterClose) }
+  const navigateLightbox = (direction) => {
+    const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage?.title)
+    const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
+    setSelectedImage(filteredPortfolio[nextIndex])
+  }
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         setMenuOpen(false)
-        if (selectedImage) {
-          setSelectedImage(null)
-          requestAnimationFrame(restoreFocusAfterClose)
-        }
+        if (selectedImage) closeLightbox()
       }
       if (!selectedImage) return
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault()
-        const direction = event.key === 'ArrowLeft' ? -1 : 1
-        const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage.title)
-        const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
-        setSelectedImage(filteredPortfolio[nextIndex])
+        navigateLightbox(event.key === 'ArrowLeft' ? -1 : 1)
       }
       if (event.key === 'Tab') {
         const focusable = lightboxRef.current?.querySelectorAll('button')
@@ -61,7 +66,7 @@ function App() {
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [filteredPortfolio, selectedImage])
+  })
 
   useEffect(() => {
     if (selectedImage) lightboxCloseRef.current?.focus()
@@ -72,22 +77,16 @@ function App() {
     return () => { document.body.style.overflow = '' }
   }, [selectedImage, menuOpen])
 
-  const openLightbox = (item, event) => { lastFocusedElement.current = event.currentTarget; setSelectedImage(item) }
-  const closeLightbox = () => { setSelectedImage(null); requestAnimationFrame(restoreFocusAfterClose) }
-  const navigateLightbox = (direction) => {
-    const currentIndex = filteredPortfolio.findIndex((item) => item.title === selectedImage?.title)
-    const nextIndex = (currentIndex + direction + filteredPortfolio.length) % filteredPortfolio.length
-    setSelectedImage(filteredPortfolio[nextIndex])
-  }
-
   return (
-    <div className="site-shell">
+    <div className="site-shell is-ready">
+      <div className="scroll-progress" aria-hidden="true" />
       <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       <main>
         <Hero whatsappLink={whatsappLink} />
+        <Marquee />
         <Sobre />
         <Servicos />
-        <Portfolio category={category} categories={categorias} filteredPortfolio={filteredPortfolio} setCategory={setCategory} openLightbox={openLightbox} videos={videos} instagramLink={contato.instagramLink} />
+        <Portfolio category={category} categories={categorias} portfolio={portfolio} filteredPortfolio={filteredPortfolio} setCategory={setCategory} openLightbox={openLightbox} videos={videos} instagramLink={contato.instagramLink} />
         <Processo />
         <Valores precos={precos} whatsappLink={whatsappLink} />
         <Contato contato={contato} whatsappLink={whatsappLink} />

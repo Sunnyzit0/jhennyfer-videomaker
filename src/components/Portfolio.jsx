@@ -1,29 +1,76 @@
 import { ArrowUpRight, Play } from 'lucide-react'
+import { Kicker } from './Kicker'
+import { Titulo } from './Titulo'
 
 const youtubeEmbedUrl = (url) => {
   try {
     const parsedUrl = new URL(url)
-    const videoId = parsedUrl.searchParams.get('v') || parsedUrl.pathname.split('/').pop()
+    const videoId = parsedUrl.searchParams.get('v') || parsedUrl.pathname.split('/').filter(Boolean).pop()
     return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : url
   } catch {
     return url
   }
 }
 
-export function Portfolio({ category, categories, filteredPortfolio, setCategory, openLightbox, videos, instagramLink }) {
+const pad = (value) => String(value).padStart(2, '0')
+
+export function Portfolio({ category, categories, portfolio, filteredPortfolio, setCategory, openLightbox, videos, instagramLink }) {
+  const contar = (item) => (item === 'Todos' ? portfolio.length : portfolio.filter((foto) => foto.category === item).length)
+
   return (
     <section className="portfolio-section section-padding" id="portfolio">
       <div className="portfolio-heading">
-        <div><div className="section-kicker"><span>04</span><span>meu olhar</span></div><h2>Feito de histórias<br /><em>que merecem ficar.</em></h2></div>
-        <p>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p>
+        <div>
+          <Kicker numero="04">meu olhar</Kicker>
+          <Titulo linhas={['Feito de histórias', <em key="f">que merecem ficar.</em>]} />
+        </div>
+        <p data-reveal>Uma seleção de momentos, pessoas e encontros que tive a alegria de registrar.</p>
       </div>
-      <div className="filter-row" role="group" aria-label="Filtrar portfólio">
-        {categories.map((item) => <button className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>{item}</button>)}
+
+      <div className="filter-row" role="group" aria-label="Filtrar portfólio" data-reveal>
+        {categories.map((item) => (
+          <button type="button" className={category === item ? 'filter-button active' : 'filter-button'} key={item} onClick={() => setCategory(item)} aria-pressed={category === item}>
+            {item}<sup>{pad(contar(item))}</sup>
+          </button>
+        ))}
       </div>
-      <div className={`portfolio-grid ${category !== 'Todos' ? `is-filtered count-${filteredPortfolio.length}` : ''}`}>
-        {filteredPortfolio.map((item, index) => <button className={`portfolio-item item-${index + 1}`} key={item.title} onClick={(event) => openLightbox(item, event)}><img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="eager" decoding="async" style={item.posicao ? { objectPosition: item.posicao } : undefined} /><span className="portfolio-overlay"><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={20} /></span></button>)}
+
+      <div className="portfolio-grid" key={category}>
+        {filteredPortfolio.map((item, index) => (
+          <button type="button" className="portfolio-item" key={item.title} onClick={(event) => openLightbox(item, event)} data-cursor="ver" style={{ '--d': `${index * 90}ms` }}>
+            <span className="portfolio-media">
+              <img src={item.image} alt={`${item.title}, categoria ${item.category}`} width={item.width} height={item.height} loading="eager" decoding="async" style={item.posicao ? { objectPosition: item.posicao } : undefined} />
+            </span>
+            <span className="portfolio-frame" aria-hidden="true">FR {pad(index + 1)}</span>
+            <span className="portfolio-overlay">
+              <span>{item.category}</span>
+              <strong>{item.title}</strong>
+              <ArrowUpRight size={20} aria-hidden="true" />
+            </span>
+          </button>
+        ))}
       </div>
-      {videos.length > 0 ? <div className="video-grid">{videos.map((video) => video.tipo === 'youtube' ? <iframe key={video.url} src={youtubeEmbedUrl(video.url)} title={video.titulo} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /> : <a className="video-link-card" key={video.url} href={video.url} target="_blank" rel="noreferrer">{video.capa && <img src={video.capa} alt="" loading="lazy" />}<span>{video.titulo}</span><ArrowUpRight size={20} /></a>)}</div> : <div className="video-placeholder"><div className="play-icon"><Play size={17} fill="currentColor" /></div><div><span className="eyebrow">em breve</span><p>Vídeos e reels selecionados</p></div><a className="placeholder-note" href={instagramLink} target="_blank" rel="noreferrer">Instagram</a></div>}
+
+      {videos.length > 0 ? (
+        <div className="video-grid">
+          {videos.map((video) => video.tipo === 'youtube'
+            ? <iframe key={video.url} src={youtubeEmbedUrl(video.url)} title={video.titulo} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            : <a className="video-link-card" key={video.url} href={video.url} target="_blank" rel="noreferrer">{video.capa && <img src={video.capa} alt="" loading="lazy" />}<span>{video.titulo}</span><ArrowUpRight size={20} /></a>)}
+        </div>
+      ) : (
+        <a className="video-placeholder" href={instagramLink} target="_blank" rel="noreferrer" data-reveal>
+          <span className="sprockets" aria-hidden="true" />
+          <span className="video-placeholder-body">
+            <span className="play-icon" aria-hidden="true"><Play size={18} fill="currentColor" /></span>
+            <span className="video-placeholder-copy">
+              <span className="eyebrow">em breve · em edição</span>
+              <strong>Vídeos e reels selecionados</strong>
+            </span>
+            <span className="placeholder-note">ver no Instagram <ArrowUpRight size={16} aria-hidden="true" /></span>
+          </span>
+          <span className="sprockets" aria-hidden="true" />
+        </a>
+      )}
     </section>
   )
 }
