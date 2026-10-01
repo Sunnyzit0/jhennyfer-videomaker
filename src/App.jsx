@@ -44,9 +44,11 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
-        setSelectedImage(null)
-        requestAnimationFrame(restoreFocusAfterClose)
         setMenuOpen(false)
+        if (selectedImage) {
+          setSelectedImage(null)
+          requestAnimationFrame(restoreFocusAfterClose)
+        }
       }
       if (!selectedImage) return
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
