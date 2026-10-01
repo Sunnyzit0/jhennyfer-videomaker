@@ -1555,6 +1555,20 @@ section[id] {
 .back-top:hover {
   color: var(--paper);
 }
+.assinatura {
+  color: var(--paper);
+  font-family: var(--f-serif);
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  margin-top: 26px;
+  opacity: 0.22;
+  text-align: center;
+  transition: opacity 0.4s ease;
+}
+.assinatura:hover {
+  opacity: 0.6;
+}
 
 /* ---------- WhatsApp flutuante ---------- */
 
