@@ -1541,7 +1541,7 @@ section[id] {
   font-family: var(--f-mono);
   font-size: 11px;
   gap: 12px 24px;
-  justify-content: space-between;
+  justify-content: flex-end;
   letter-spacing: 0.08em;
   margin-top: 40px;
   padding-top: 20px;
